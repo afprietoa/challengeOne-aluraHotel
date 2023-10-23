@@ -1,7 +1,7 @@
 # Alura-Hotel
 Sistema de reserva de Hotel Alura trabajado en el marco del Programa ONE - Oracle Next Education
 
-
+```java {.highlight .highlight-source-java .bg-black}
 DROP DATABASE IF EXISTS alura_hotel;
 CREATE DATABASE alura_hotel;
 
@@ -32,3 +32,4 @@ CREATE TABLE usuario(
 nombre VARCHAR(50),
 contrasena VARCHAR(50)
 );
+```
