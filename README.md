@@ -59,6 +59,8 @@ Después de realizar esta operación, regresarás al menú principal, donde podr
 
 En general, en aplicaciones Java Swing, cambiar de una vista a otra puede hacerse de varias maneras, como usando CardLayout, mostrando y ocultando paneles, o utilizando ventanas (frames) separadas y controlando su visibilidad.
 
+## Navegación por Vistas separates
+
 ## Clase Reservas views
 
 ### ReservasView -> MenuPrincipal:
@@ -302,4 +304,82 @@ btnEditar.addMouseListener(new MouseAdapter(){
         }
     }
 });
+```
+## Navegación por CardLayout
+
+## Clase Menu Usuario
+
+### Configura el CardLayout:
+Primero, es necesario tener un contenedor principal con CardLayout:
+
+```java {.highlight .highlight-source-java .bg-black}
+import javax.swing.*;
+import java.awt.*;
+
+public class MainFrame extends JFrame {
+    private CardLayout cardLayout = new CardLayout();
+    private JPanel mainPanel = new JPanel(cardLayout);
+
+    private MenuUsuario menuUsuario;
+    private ReservasView reservasView;
+    private Busqueda busquedaView;
+
+    public MainFrame() {
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        menuUsuario = new MenuUsuario(cardLayout, mainPanel);
+        reservasView = new ReservasView();
+        busquedaView = new Busqueda();
+
+        mainPanel.add(menuUsuario, "menuUsuario");
+        mainPanel.add(reservasView, "reservasView");
+        mainPanel.add(busquedaView, "busquedaView");
+
+        add(mainPanel, BorderLayout.CENTER);
+
+        cardLayout.show(mainPanel, "menuUsuario");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
+    }
+}
+```
+
+### Modifica el MenuUsuario para usar CardLayout:
+En lugar de instanciar nuevas vistas y cerrar la actual, usarás el CardLayout para cambiar entre tarjetas.
+
+```java {.highlight .highlight-source-java .bg-black}
+public class MenuUsuario extends JPanel {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+
+    public MenuUsuario(CardLayout cardLayout, JPanel mainPanel) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
+
+        JPanel btnRegistro = new JPanel();
+        btnRegistro.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                cardLayout.show(mainPanel, "reservasView");
+            }
+        });
+
+        JPanel btnBusqueda = new JPanel();
+        btnBusqueda.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                cardLayout.show(mainPanel, "busquedaView");
+            }
+        });
+
+        add(btnRegistro);
+        add(btnBusqueda);
+    }
+}
 ```
